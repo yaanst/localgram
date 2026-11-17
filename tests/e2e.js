@@ -95,8 +95,8 @@ const shot = async (page, name) => SHOTS && page.screenshot({ path: path.join(SH
 
   // 7. Manual theme overrides the system setting, and survives a reload.
   const bg = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-  const DARK = 'rgb(22, 24, 29)';
-  const LIGHT = 'rgb(246, 244, 239)';
+  const DARK = 'rgb(34, 41, 47)';
+  const LIGHT = 'rgb(238, 238, 231)';
   assert.strictEqual(await bg(), DARK, 'Auto follows dark system');
   await page.click('#theme-picker [data-theme="light"]');
   assert.strictEqual(await bg(), LIGHT, 'Light overrides dark system');

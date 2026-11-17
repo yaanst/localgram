@@ -651,7 +651,7 @@ if (typeof document !== 'undefined') (function App() {
   }
 
   function celebrate() {
-    const colors = ['#2f6fed', '#e0453a', '#f5b700', '#2bb673', '#9b59b6'];
+    const colors = ['#22678c', '#856126', '#735293', '#2d7164', '#964c70', '#8dbdd8', '#d0b275', '#91bfaa'];
     const frag = document.createDocumentFragment();
     for (let k = 0; k < 60; k++) {
       const piece = document.createElement('i');
@@ -718,7 +718,7 @@ if (typeof document !== 'undefined') (function App() {
     // Keep the browser/status bar colour in sync with the effective theme.
     const dark = t === 'dark' || (t !== 'light' && darkQuery.matches);
     document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
-      m.setAttribute('content', dark ? '#16181d' : '#f6f4ef');
+      m.setAttribute('content', dark ? '#22292f' : '#eeeee7');
       m.removeAttribute('media');
     });
   }
