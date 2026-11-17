@@ -15,7 +15,7 @@ HEART = [
     "....XX....",
     "..........",
 ]
-BG, CELL, FILL = (39, 48, 63), (58, 68, 86), (246, 244, 239)
+BG, CELL, FILL = (40, 54, 56), (68, 95, 98), (238, 238, 231)  # Vectors-style ink, slate teal, paper
 
 def make(size: int) -> None:
     img = Image.new("RGB", (size, size), BG)

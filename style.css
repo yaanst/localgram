@@ -1,53 +1,72 @@
-/* LocalGram styles — mobile-first, portrait, light/dark via system setting. */
+/* LocalGram styles — mobile-first, portrait.
+ * Look and palette follow the "Vectors" ATC game (vectorsatc.com):
+ * warm paper + slate ink in light mode, muted slate in dark mode,
+ * Arial/Helvetica text with monospace numerals, small radii, uppercase labels.
+ * Only system fonts are used, so nothing is downloaded and it works offline.
+ */
 
 :root {
-  --bg: #f6f4ef;
-  --panel: #ffffff;
-  --text: #1d1f24;
-  --muted: #8a8f99;
-  --line: #d4d2cc;
-  --line-strong: #6b6f78;
-  --fill: #27303f;
-  --cross: #9aa0aa;
-  --accent: #2f6fed;
-  --accent-text: #ffffff;
-  --error: #e0453a;
-  --clue-done: #c2c4c8;
+  --font-sans: Arial, Helvetica, sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  /* Light palette */
+  --bg: #eeeee7;          /* paper */
+  --panel: #f7f6ef;       /* surface */
+  --raised: #e2e5df;
+  --text: #283638;        /* ink */
+  --muted: #5e6866;
+  --line: #b8c1bb;
+  --line-strong: #788680;
+  --fill: #445f62;        /* slate teal */
+  --cross: #788680;
+  --accent: #445f62;
+  --accent-text: #f7f6ef;
+  --focus: #225f91;
+  --error: #a73943;
+  --clue-done: #b8c1bb;
+  --shadow: rgb(40 54 56 / 0.25);
+
   --cell: 28px;        /* set from JS to fit the screen */
   --clue-font: 13px;   /* set from JS */
-  --radius: 10px;
+  --radius: 4px;
 }
 
 /* Dark palette: used when the user picks Dark, or picks Auto (default)
    and the system is in dark mode. data-theme is set on <html> by game.js. */
 :root[data-theme="dark"] {
-  --bg: #16181d;
-  --panel: #1f2229;
-  --text: #e8e9ec;
-  --muted: #8d929c;
-  --line: #353a44;
-  --line-strong: #8a909b;
-  --fill: #dfe3ea;
-  --cross: #6c727d;
-  --accent: #5b8dff;
-  --accent-text: #0e1118;
-  --error: #ff6b5f;
-  --clue-done: #4a4f59;
+  --bg: #22292f;          /* paper */
+  --panel: #2a3239;       /* surface */
+  --raised: #313c45;
+  --text: #e5e9ec;        /* ink */
+  --muted: #a6b1b8;
+  --line: #45515a;
+  --line-strong: #6a7a84;
+  --fill: #b3c8d5;        /* soft blue-grey instead of pure white: easier on the eyes */
+  --cross: #6a7a84;
+  --accent: #b3c8d5;
+  --accent-text: #22292f;
+  --focus: #8ec2f0;
+  --error: #ef9797;
+  --clue-done: #56636c;
+  --shadow: rgb(0 0 0 / 0.45);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #16181d;
-    --panel: #1f2229;
-    --text: #e8e9ec;
-    --muted: #8d929c;
-    --line: #353a44;
-    --line-strong: #8a909b;
-    --fill: #dfe3ea;
-    --cross: #6c727d;
-    --accent: #5b8dff;
-    --accent-text: #0e1118;
-    --error: #ff6b5f;
-    --clue-done: #4a4f59;
+    --bg: #22292f;          /* paper */
+    --panel: #2a3239;       /* surface */
+    --raised: #313c45;
+    --text: #e5e9ec;        /* ink */
+    --muted: #a6b1b8;
+    --line: #45515a;
+    --line-strong: #6a7a84;
+    --fill: #b3c8d5;        /* soft blue-grey instead of pure white: easier on the eyes */
+    --cross: #6a7a84;
+    --accent: #b3c8d5;
+    --accent-text: #22292f;
+    --focus: #8ec2f0;
+    --error: #ef9797;
+    --clue-done: #56636c;
+    --shadow: rgb(0 0 0 / 0.45);
   }
 }
 :root[data-theme="light"] { color-scheme: light; }
@@ -59,7 +78,8 @@ html, body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font: 15px/1.35 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font: 15px/1.35 var(--font-sans);
+  -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   -webkit-text-size-adjust: 100%;
 }
@@ -81,7 +101,7 @@ button {
   touch-action: manipulation;
 }
 button:disabled { opacity: 0.4; cursor: default; }
-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
 .app {
   max-width: 560px;
@@ -93,8 +113,8 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 }
 
 .top { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; }
-.top h1 { font-size: 20px; margin: 0; letter-spacing: 0.02em; }
-.timer { font-variant-numeric: tabular-nums; font-size: 18px; font-weight: 600; }
+.top h1 { font-size: 17px; margin: 0; letter-spacing: 0.08em; text-transform: uppercase; }
+.timer { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 18px; font-weight: 600; }
 
 .pickers, .toolbar, .options {
   display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap;
@@ -102,7 +122,8 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* Segmented control */
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-.seg button { border: 0; border-radius: 0; background: var(--panel); min-width: 48px; min-height: 40px; }
+.seg button { border: 0; border-radius: 0; background: var(--panel); min-width: 48px; min-height: 40px;
+  font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; }
 .seg button + button { border-left: 1px solid var(--line); }
 .seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-text); font-weight: 600; }
 
@@ -117,13 +138,14 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     linear-gradient(-45deg, transparent 42%, currentColor 42% 58%, transparent 58%);
 }
 
-.status { margin: 0; text-align: center; color: var(--muted); font-size: 13px; min-height: 18px; }
+.status { margin: 0; text-align: center; color: var(--muted); font-family: var(--font-mono); font-size: 12px; min-height: 18px; }
 
-.options { gap: 16px; font-size: 14px; }
+.options { gap: 16px; font-size: 13px; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; }
 .theme { display: inline-flex; align-items: center; gap: 8px; }
-.theme .seg button { min-height: 36px; min-width: 0; padding: 4px 10px; font-size: 14px; }
+.theme .seg button { min-height: 36px; min-width: 0; padding: 4px 10px; font-size: 12px; }
 .switch { display: inline-flex; align-items: center; gap: 6px; }
 .switch input { width: 18px; height: 18px; accent-color: var(--accent); }
+.options .seg button:not([aria-pressed="true"]) { color: var(--text); }
 
 /* ---------- Board ---------- */
 .board-wrap { display: flex; justify-content: center; overflow-x: auto; }
@@ -145,7 +167,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 }
 .col-clues .clue {
   display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-  font-size: var(--clue-font); line-height: 1.15; font-variant-numeric: tabular-nums; font-weight: 600;
+  font-family: var(--font-mono); font-size: var(--clue-font); line-height: 1.15; font-variant-numeric: tabular-nums; font-weight: 600;
 }
 .row-clues {
   display: grid;
@@ -154,12 +176,12 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 }
 .row-clues .clue {
   display: flex; align-items: center; justify-content: flex-end; gap: 0.45em;
-  font-size: var(--clue-font); font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap;
+  font-family: var(--font-mono); font-size: var(--clue-font); font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap;
 }
 .clue.done { color: var(--clue-done); font-weight: 400; }
 /* Light zebra band on clues to help follow lines */
-.col-clues .clue:nth-child(2n) { background: color-mix(in srgb, var(--line) 25%, transparent); border-radius: 4px 4px 0 0; }
-.row-clues .clue:nth-child(2n) { background: color-mix(in srgb, var(--line) 25%, transparent); border-radius: 4px 0 0 4px; }
+.col-clues .clue:nth-child(2n) { background: var(--raised); border-radius: 2px 2px 0 0; }
+.row-clues .clue:nth-child(2n) { background: var(--raised); border-radius: 2px 0 0 2px; }
 
 .cells {
   display: grid;
@@ -186,7 +208,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .cell.major-b { border-bottom: 2px solid var(--line-strong); }
 
 .cell.f::after {
-  content: ""; position: absolute; inset: 1px; background: var(--fill); border-radius: 2px;
+  content: ""; position: absolute; inset: 1px; background: var(--fill); border-radius: 1px;
 }
 .cell.x::after {
   content: ""; position: absolute; inset: 22%;
@@ -211,16 +233,16 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* ---------- Win dialog & confetti ---------- */
 .overlay {
   position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-  background: rgb(0 0 0 / 0.45); padding: 16px; z-index: 10;
+  background: rgb(15 20 22 / 0.5); padding: 16px; z-index: 10;
 }
 .overlay[hidden] { display: none; }
 .dialog {
-  background: var(--panel); border-radius: 16px; padding: 20px; width: min(340px, 100%);
-  text-align: center; box-shadow: 0 10px 40px rgb(0 0 0 / 0.3); animation: rise 0.35s ease;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 20px; width: min(340px, 100%);
+  text-align: center; box-shadow: 0 10px 40px var(--shadow); animation: rise 0.35s ease;
 }
-.dialog h2 { margin: 0 0 12px; }
-.dialog canvas { width: 160px; height: 160px; image-rendering: pixelated; border-radius: 8px; background: var(--bg); }
-.dialog p { margin: 12px 0; }
+.dialog h2 { margin: 0 0 12px; font-size: 18px; letter-spacing: 0.08em; text-transform: uppercase; }
+.dialog canvas { width: 160px; height: 160px; image-rendering: pixelated; border-radius: 4px; background: var(--bg); border: 1px solid var(--line); }
+.dialog p { margin: 12px 0; font-family: var(--font-mono); font-size: 14px; }
 .dialog-actions { display: flex; gap: 8px; justify-content: center; }
 .dialog-actions .primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
 @keyframes rise { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
@@ -234,7 +256,7 @@ button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 .toast {
   position: fixed; left: 50%; bottom: max(16px, env(safe-area-inset-bottom)); transform: translateX(-50%);
-  background: var(--text); color: var(--bg); padding: 10px 14px; border-radius: 10px; font-size: 14px; z-index: 12;
+  background: var(--text); color: var(--bg); padding: 10px 14px; border-radius: var(--radius); font-size: 14px; z-index: 12;
   border: 0;
 }
 .toast[hidden] { display: none; }
