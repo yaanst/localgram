@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>LocalGram</title>
+  <meta name="description" content="Offline Nonogram (Picross) puzzles.">
+  <meta name="theme-color" content="#f6f4ef" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#16181d" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light dark">
+  <!-- iOS home-screen support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="LocalGram">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <h1>LocalGram</h1>
+      <div class="timer" id="timer" aria-label="Elapsed time">0:00</div>
+    </header>
+
+    <!-- Mode and size pickers -->
+    <nav class="pickers">
+      <div class="seg" id="mode-picker" role="group" aria-label="Mode">
+        <button data-mode="daily">Daily</button>
+        <button data-mode="random">Random</button>
+      </div>
+      <div class="seg" id="size-picker" role="group" aria-label="Grid size">
+        <button data-size="5">5</button>
+        <button data-size="10">10</button>
+        <button data-size="15">15</button>
+      </div>
+    </nav>
+
+    <p class="status" id="status"></p>
+
+    <!-- The board: corner | column clues / row clues | cells -->
+    <section class="board-wrap">
+      <div class="board" id="board">
+        <div class="corner"></div>
+        <div class="col-clues" id="col-clues"></div>
+        <div class="row-clues" id="row-clues"></div>
+        <div class="cells" id="cells" aria-label="Puzzle grid"></div>
+      </div>
+    </section>
+
+    <!-- Main controls -->
+    <div class="toolbar">
+      <div class="seg tool" id="tool-picker" role="group" aria-label="Tool">
+        <button data-tool="fill" aria-label="Fill"><span class="ico-fill"></span>Fill</button>
+        <button data-tool="cross" aria-label="Mark empty"><span class="ico-cross"></span>X</button>
+      </div>
+      <button class="icon-btn" id="undo" aria-label="Undo" title="Undo">↶</button>
+      <button class="icon-btn" id="redo" aria-label="Redo" title="Redo">↷</button>
+      <button class="icon-btn" id="restart" aria-label="Restart" title="Restart">⟲</button>
+      <button class="icon-btn" id="new-random" aria-label="New random puzzle" title="New puzzle">＋</button>
+    </div>
+
+    <div class="options">
+      <label class="switch"><input type="checkbox" id="opt-check"><span>Check mistakes</span></label>
+      <label class="switch"><input type="checkbox" id="opt-haptics"><span>Vibration</span></label>
+    </div>
+  </main>
+
+  <!-- Win dialog -->
+  <div class="overlay" id="win" hidden>
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="win-title">
+      <h2 id="win-title">Solved!</h2>
+      <canvas id="win-image" width="160" height="160" aria-label="Solved picture"></canvas>
+      <p id="win-text"></p>
+      <div class="dialog-actions">
+        <button id="win-close">Close</button>
+        <button id="win-next" class="primary">New random</button>
+      </div>
+    </div>
+  </div>
+  <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script src="game.js"></script>
+</body>
+</html>
