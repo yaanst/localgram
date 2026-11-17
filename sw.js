@@ -7,7 +7,7 @@
  * sw.js on each visit; a changed byte installs the new worker, which caches
  * the new files and deletes the old cache on activation.
  */
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const CACHE_NAME = `localgram-${CACHE_VERSION}`;
 
 // Relative URLs resolve against this file's location, so the app works

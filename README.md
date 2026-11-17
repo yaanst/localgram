@@ -11,7 +11,7 @@ No app store, no backend, no build step. It uses plain HTML, CSS and JavaScript.
 - Every puzzle is generated in code and checked with a line solver, so it has a **unique solution reachable by logic alone**.
 - Tap to fill, Fill/X toggle, drag to paint (the stroke locks to its row or column), undo/redo, restart, timer.
 - Optional "Check mistakes" highlighting, clue dimming, haptics, and a win celebration with the solved picture.
-- Light/dark theme follows the system setting.
+- Theme: **Auto** (follows the system setting, the default), **Light** or **Dark**.
 - All state lives in `localStorage`: the puzzle in progress (one per mode and size), completed puzzles, best times and settings.
 
 ## Files
@@ -19,7 +19,7 @@ No app store, no backend, no build step. It uses plain HTML, CSS and JavaScript.
 | File | Purpose |
 |---|---|
 | `index.html` | Page markup |
-| `style.css` | Styles (mobile-first, dark mode) |
+| `style.css` | Styles (mobile-first, light/dark themes) |
 | `game.js` | **Core** (RNG, line solver, generator; testable in Node) + **App** (UI) |
 | `sw.js` | Service worker: pre-caches assets, serves cache-first |
 | `manifest.webmanifest` | Install metadata |

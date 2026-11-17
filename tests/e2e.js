@@ -93,6 +93,24 @@ const shot = async (page, name) => SHOTS && page.screenshot({ path: path.join(SH
   await page.click('#size-picker [data-size="10"]');
   await shot(page, '4-dark-random-10');
 
+  // 7. Manual theme overrides the system setting, and survives a reload.
+  const bg = () => page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  const DARK = 'rgb(22, 24, 29)';
+  const LIGHT = 'rgb(246, 244, 239)';
+  assert.strictEqual(await bg(), DARK, 'Auto follows dark system');
+  await page.click('#theme-picker [data-theme="light"]');
+  assert.strictEqual(await bg(), LIGHT, 'Light overrides dark system');
+  await page.reload();
+  await page.waitForSelector('#cells .cell');
+  assert.strictEqual(await bg(), LIGHT, 'Light choice persists');
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.click('#theme-picker [data-theme="dark"]');
+  assert.strictEqual(await bg(), DARK, 'Dark overrides light system');
+  await shot(page, '5-theme-dark-override');
+  await page.click('#theme-picker [data-theme="system"]');
+  assert.strictEqual(await bg(), LIGHT, 'Auto follows light system again');
+  console.log('✓ theme picker overrides the system setting and persists');
+
   assert.deepStrictEqual(errors, [], `no page errors: ${errors}`);
   await browser.close();
   console.log('All e2e checks passed.');

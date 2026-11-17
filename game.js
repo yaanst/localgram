@@ -229,13 +229,13 @@ if (typeof document !== 'undefined') (function App() {
 
   /* ---------------- Persistent storage (localStorage) ----------------
    * One JSON object:
-   *   settings  — mode, size, tool, check mistakes, haptics
+   *   settings  — mode, size, tool, check mistakes, haptics, theme
    *   progress  — one in-progress puzzle per "mode-size" slot
    *   completed — puzzle id -> { time, at }
    *   best      — size -> best time in ms
    */
   const DEFAULTS = {
-    settings: { mode: 'daily', size: 10, tool: 'fill', check: false, haptics: true },
+    settings: { mode: 'daily', size: 10, tool: 'fill', check: false, haptics: true, theme: 'system' },
     progress: {},
     completed: {},
     best: {},
@@ -465,6 +465,7 @@ if (typeof document !== 'undefined') (function App() {
     document.querySelectorAll('#mode-picker button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.mode === s.mode));
     document.querySelectorAll('#size-picker button').forEach((b) => b.setAttribute('aria-pressed', Number(b.dataset.size) === s.size));
     document.querySelectorAll('#tool-picker button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.tool === s.tool));
+    document.querySelectorAll('#theme-picker button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.theme === s.theme));
     el.undo.disabled = solved || !undoStack.length;
     el.redo.disabled = solved || !redoStack.length;
     el.check.checked = s.check;
@@ -704,6 +705,33 @@ if (typeof document !== 'undefined') (function App() {
   });
   // Hide the vibration option where the API doesn't exist (e.g. iOS Safari).
   if (!('vibrate' in navigator)) el.haptics.closest('label').hidden = true;
+
+  /* ---------------- Theme ----------------
+   * 'system' follows prefers-color-scheme; 'light' / 'dark' override it by
+   * setting data-theme on <html> (the CSS keys off that attribute).
+   */
+  const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+  function applyTheme() {
+    const t = store.settings.theme;
+    if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    else delete document.documentElement.dataset.theme;
+    // Keep the browser/status bar colour in sync with the effective theme.
+    const dark = t === 'dark' || (t !== 'light' && darkQuery.matches);
+    document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
+      m.setAttribute('content', dark ? '#16181d' : '#f6f4ef');
+      m.removeAttribute('media');
+    });
+  }
+  darkQuery.addEventListener('change', applyTheme);
+  $('theme-picker').addEventListener('click', (e) => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    store.settings.theme = b.dataset.theme;
+    applyTheme();
+    updateControls();
+    saveStore();
+  });
+  applyTheme();
 
   function haptic(pattern) {
     if (store.settings.haptics && navigator.vibrate) {
